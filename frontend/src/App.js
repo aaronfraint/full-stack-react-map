@@ -1,22 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+
+import logo from "./logo.svg";
+import "./App.css";
 
 function App() {
+  const [apiData, setApiData] = useState(null);
+
+  function getData() {
+    const options = {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json;charset=UTF-8",
+      },
+      // body: JSON.stringify({
+      //   a: 10,
+      //   b: 20,
+      // }),
+    };
+    fetch("/api/day", options)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setApiData(data);
+      });
+  }
+  //end of new line
+
   return (
     <div className="App">
       <header className="App-header">
+        <h1>React / FastAPI</h1>
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+
+        <button onClick={getData}>click me</button>
+        {apiData && <div>The button was clicked at exactly: {apiData}</div>}
       </header>
     </div>
   );
